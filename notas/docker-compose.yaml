@@ -1,0 +1,46 @@
+
+services: # Aqui ponemos los contenedores que queremos gestionar
+  web:
+    image:              nginx
+    container_name:     mi-nginx  # Nombre del contenedor: 
+                                  # me sirve para identificar el contenedor en docker
+    environment:
+                      - VARIABLE1=VALOR1
+                      - DATABASE_URL=mysql://mi-usuario:password@db:3306/mi-db
+    ports:
+                      - 0.0.0.0:8084:80
+    volumes:
+                      - volumen_nginx1:/tmp2
+  web2:
+    image:              nginx
+    container_name:     mi-nginx  # Nombre del contenedor: 
+                                  # me sirve para identificar el contenedor en docker
+    environment:
+                      - VARIABLE1=VALOR1
+                      - DATABASE_URL=mysql://mi-usuario:password@db:3306/mi-db
+    ports:
+                      - 0.0.0.0:8085:80
+    volumes:
+                      - volumen_nginx2:/tmp2
+  db: # FQDN resoluble por el dns interno de docker para comunicarse con el contenedor
+    image:              mysql
+    container_name:     mi-mysql
+    environment:
+                      - MYSQL_ROOT_PASSWORD=1234
+                      - MYSQL_DATABASE=mi-db
+                      - MYSQL_USER=mi-usuario
+                      - MYSQL_PASSWORD=password
+
+volumes: # Aqui ponemos los volúmenes que queremos gestionar
+  volumen_nginx1:
+  volumen_nginx2:
+
+  # Esto es lo que llamamos named volumes
+  # Son volúmenes que se crean en el sistema de archivos del host
+  # Pero en una ruta que gestiona docker
+  # No que pongo yo explicitamente
+
+  # Eso NO LO QUIERO
+  # Joder... si guardo los datos, quiero saber donde están.
+  # Para poder copiarlos, mandarlos a un compañero
+  # o hacer un backup

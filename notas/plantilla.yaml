@@ -1,0 +1,165 @@
+---
+# En un documento yaml puedo poner comentarios... ALELUYA !
+# Igual que en python, con la almohadilla (#)
+# De hecho la sintaxis de yaml está fuertemente inspirada en python
+---
+# En un archivo YAML puedo tener MUCHOS DOCUMENTOS YAML. 
+# Eso no se puede ni en JSON, ni XML... ni na'
+# La marca --- indica principio de documento.
+# Esa marca no se pone en el primer documento
+---
+# En raras ocasiones (solo los muy frikis que quizás no saben muy bien lo que están haciendo)
+# encontrareis ... Eso indica final de documento
+...
+---
+# Eso nunca lo ponemos en un archivo. 
+# Está pensado sólo para transmisiones en red.
+---
+# Un documento YAML debe contener un NODO RAÍZ
+---
+# En YAML hay 2 tipos de nodos: ESCALARES y COLECCIONES
+# Los escalares son los que tienen un único valor
+# Las colecciones son los que tienen varios Subnodos
+---
+# Nodos escalares:
+# Números
+3
+---
+3.13
+--- 
+-.inf # -.Inf -.INF
+---
+# Valores booleanos
+true # True TRUE
+---
+false # False FALSE
+---
+FALSE
+---
+# NOTA:  IMPORTANTE. OJO CUIDAO !!!
+# En la versión 1.1 de YAML se admitían: yes, no, on, off, y, n y sus variantes en mayúsculas
+# En la versión 1.2 de YAML se eliminan por completo
+# Como hicieron una cagada descomunal al no DEPRECARLOS (marcarlos como obsoletos)
+# Muchos parsers de YAML los siguen admitiendo
+# QUITAR ESOS VALORES EN CUANTO LOS VEÁIS
+---
+# Nodos escalares de tipo texto: LO MAS COMPLEJO DE YAML
+hola "soy 'u\nn #texto     
+---
+"hola \"soy 'u\nn #texto"
+# La contrabarra solo sirve como escape cuando usamos comillas dobles
+# \n es un salto de línea
+# \t es un tabulador
+# \\ es una contrabarra
+# \" es una comilla doble
+
+---
+'hola "soy ''u\nn #texto'
+
+# TENDEREMOS A NO USAR COMILLAS
+# Solo en casos donde sea imprescindible 
+# (para evitar ambigüedades o por el uso de caracteres 
+# especiales: #) usaré el tipo de comillas que más me convenga.
+---
+"33" # Esto es un texto
+---
+33 # Esto es un número
+
+# Pero estas sintaxis solo las usaremos cuando tenga textos de 1 línea
+# Si tengo textos de varias líneas, yaml ofrece otras 2 sintaxis.
+---
+# Literal
+|7-
+        Aqui puedo poner un texto con 
+        múltiples líneas
+          incluso con saltos de línea
+
+        y además caracteres especiales
+        como por ejemplo: #, ", ', etc. |\n \\
+
+
+---        
+# Folded
+>
+  docker container create
+    -e VARIABLE1=VALOR1
+    --name mi-nginx
+    -p 0.0.0.0:8083:80
+    -v /home/ubuntu/environment:/tmp2
+    nginx
+# Aqui aplica lo mismo que en la sintaxis literal, pero los saltos de línea 
+# se sustituyen por espacios en blanco
+
+--- 
+# Nodos de colección: 
+## Listas ordenadas: Es una colección de nodos que se ordenan por índice
+- Item 1
+- Item 2
+- 33
+- true
+- 
+  - Subitem 1
+  - Subitem 2
+  - Subitem 3
+- - Subitem 1 # Esto es igual a lo de arriba
+  - Subitem 2
+  - Subitem 3
+---
+# Hay una sintaxis alternativa para las listas
+- item 1
+- 2
+- true
+---
+[ "item 1", 2, true ]  # Esta sintaxis está desaconsejada... y solo está ahí por compatibilidad con JSON
+# Solo hay un caso de uso de esta sintaxis:
+---
+[] # Lista vacía
+---
+
+## Mapas desordenados
+### Un mapa es una colección de pares clave:valor
+# En según que lenguaje de programación: Diccionario, Hash, Objeto, Array asociativo, etc.
+clave1: valor1
+clave2: 33
+clave3: true
+clave4: 
+  - Subitem 1
+  - Subitem 2
+  - Subitem 3
+clave5:
+  subclave1:               valor1
+  subclave2: 33
+  subclave3: true
+  subclave4: 
+    - Subitem 1
+    - Subitem 2
+    - Subitem 3
+---
+# Los mapas son desordenados
+clave1: valor1
+clave2: 33
+clave3: true
+---
+clave2: 33
+clave1: valor1
+clave3: true
+# Estos dos mapas son iguales
+---
+# Hay una sintaxis alternativa para los mapas
+{ clave1: valor1, clave2: 33, clave3: true }
+# Esta sintaxis está desaconsejada... y solo está ahí por compatibilidad con JSON
+# Solo hay un caso de uso de esta sintaxis:
+---
+{} # Mapa vacío
+---
+# Yaml solo me da una sintaxis
+# Los programas que usan YAML definen un ESQUEMA.
+# Un esquema es un conjunto de reglas que definen la estructura de los documentos YAML
+# Indican que CLAVES hay que usar, si son obligatorias, si son opcionales, si son repetibles, etc.
+# Los tipos de datos de los valores asociados a las claves.
+
+# Docker compose es solo un ejemplo de un esquema de YAML
+# Kubernetes define otro esquema de YAML
+# Ansible define otro esquema de YAML
+# Azure devops define otro esquema de YAML
+# La configuración de una red en ubuntu server define otro esquema de YAML

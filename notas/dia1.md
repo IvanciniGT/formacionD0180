@@ -55,7 +55,7 @@ Creamos contenedores desde IMÁGENES DE CONTENEDOR.
 
 ## Imágenes de contenedor
 
-Es un triste archivo comprimido (tar.gz) que contiene:
+Es un triste archivo comprimido (tar) que contiene:
 - Una estructura de carpetas compatible con posix (la realidad es que no es necesario... aunque es lo habitual)
     bin/
     etc/
@@ -199,10 +199,17 @@ $ docker <TIPO DE OBJETO> <VERBO> <ARGUMENTOS>
 
 TIPO DE OBJETO:     VERBOS
 
-image               list    rm  pull
-container           list    rm  start stop restart logs
-volume              list    rm
-network             list    rm
+image               list    rm  inspect     pull
+container           list    rm  inspect     start stop restart logs create
+volume              list    rm  inspect
+network             list    rm  inspect
+
+## Alias de docker
+                                            ALIAS
+docker container list                       docker ps
+docker image list                           docker images
+docker container start                      docker start
+docker image rm                             docker rmi
 
 ## Comunicaciones con contenedores
 
@@ -216,6 +223,7 @@ network             list    rm
         |   172.17.0.1         172.17.0.2:80
         |   |                   |
         |   +-------------------+--------------- (docker)
+        |
         127.0.0.1 (localhost)
         |
         | (loopback)
@@ -228,11 +236,6 @@ $ docker container create --name mi-nginx -p 8083:80 nginx:latest
 Las redirecciones de puertos las usamos con 2 finalidades en docker:
 - Que externamente a un contenedor, se pueda acceder a un puerto de un contenedor
 - Facilitarme el acceso local a un puerto de un contenedor: al poder usar la palabra "localhost" en lugar de la IP del contenedor (que a priori desconozco.. y tendría que consultar con un docker container inspect)
-
-------
-
-- Inmutabilidad
-
 
 ---
 
