@@ -1,0 +1,8 @@
+kind:           Namespace
+apiVersion:     v1
+
+metadata:
+  name:         wordpress-desarrollo
+
+# $ kubectl apply -f 1.Namespace.yaml
+# Eso creará el namespace en el cluster

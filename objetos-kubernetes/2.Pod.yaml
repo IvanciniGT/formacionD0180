@@ -1,0 +1,51 @@
+kind:                 Pod
+apiVersion:           v1
+
+metadata:
+  name:               mariadb
+
+spec:
+  containers:
+    - name:             mariadb
+      image:            mariadb:11.7
+      imagePullPolicy:  IfNotPresent     # Always, Never
+                        # Always: Siempre intenta descargar la imagen antes de crear el contenedor.. aunque en la máquina ya exista esa imagen.
+                        # Hay que tener cuidao... Kubernetes no es docker.
+                        # Si monto esto en prod... y quiero 5 replicas.. y el kubernetes las empieza a mover de un sitio para otro...
+                        # Y así con otros proyectos en el cluster
+                        # Cuantas peticiones voy a estar lanzando al registry de imagenes? Montonones.
+                        # No continuamente... pero quizás si en picos.
+                        # Y los registries públicos capan. Y nos cortan por horas el grifo.
+      resources:      # Limitaciones de recursos de cpu y ram para el contenedor
+        requests:     # Pido esto para arrancar
+          cpu:        100m
+          memory:     128Mi
+        limits:       # No quiero que pase de esto
+          cpu:        500m
+          memory:     512Mi
+      env:
+        - name:       MARIADB_ROOT_PASSWORD
+          value:      password
+        - name:       MARIADB_PASSWORD
+          value:      password
+        - name:       MARIADB_USER
+          value:      usuario
+        - name:       MARIADB_DATABASE
+          value:      bd
+      volumeMounts:
+        - name:       datos-bbdd
+          mountPath:  /var/lib/mysql
+      # En el caso de Kubernetes, también podemos poner los puertos
+      # Pero este bloque puertos no tiene nada que ver con el bloque ports de docker-compose
+      ports: # En este caso, el bloque ports es meramente informativo
+        - name:           mariadb
+          containerPort:  3306
+          protocol:       TCP
+      # El no poner este bloque NO AFECTARIA A NADA!
+  # Los volumenes de Kubernetes se definen a nivel del POD...
+  # Pero se usan a nivel de contenedor!
+  volumes:
+    - name:           datos-bbdd
+    # Informar de dónde está el almacenamiento realmente?
+    # ???
+    # Mañana!

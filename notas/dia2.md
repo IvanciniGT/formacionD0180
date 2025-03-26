@@ -4,7 +4,7 @@
 Es un entorno aislado dentro de un sistema operativo (Linux) donde puedo ejecutar procesoS.
 AISLADO? En cuánto a qué?
 √ Tiene su propia configuración de red -> Su propia IP
-- Tiene su propio sistema de archivos (HDD)
+√ Tiene su propio sistema de archivos (HDD)
 √ Tiene sus propias variables de entorno
 - Puede tener limitaciones de acceso al hardware
 
@@ -175,7 +175,7 @@ Y además, cualquier fabricante de cabinas de discos o de NAS o de almacenamient
 
 ## Para qué sirven los volúmenes?
 
-- Persistir datos tras la muerte de un contenedor
+- Persistir datos tras el borrado de un contenedor
 - Para compartir datos entre varios contenedores
 - Para poder inyectar archivos/carpetas dentro de un contenedor para que los programas que ahí corren tengan acceso a ellos (configuración).
 

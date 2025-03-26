@@ -1,0 +1,41 @@
+# Todo objeto de kubernetes va a tener la siguiente estructura:
+
+kind:             Namespace # El tipo de objeto que quiero configurar: Pod, Service, Deployment, etc.
+apiVersion:       v1        # Los objetos de kubernetes se definen dentro de LIBRERIAS
+                            # Programas adicionales que instale dentro de kubernetes, pueden registrar en kubernetes sus propias librerías de objetos: CRD (Custom Resource Definition)
+                            # Openshift me da más de 200 CRDs adicionales a los que me da kubernetes
+                            # ISTIO me da más de 50 CRDs adicionales a los que me da kubernetes
+                            # CertManager me da unos de 15 CRDs adicionales a los que me da kubernetes
+                            # Las librerías se identifican por un nombre y su versión:            nombre/version
+                            # Cuando le hablo a Kubernetes de un tipo de objeto (KIND) le debo indicar la librería en la que se define ese tipo de objeto.
+                            # Kubernetes trae sus propias librerías:
+                            #  core/v1
+                            #  apps/v1
+                            #  batch/v1
+                            #  networking.k8s.io/v1
+                            #  storage.k8s.io/v1
+                            #  rbac.authorization.k8s.io/v1
+                            #  policy/v1beta1
+                            #  autoscaling/v1
+                            # Necesitamos aprender qué objetos están definidos en cada librería
+                            # Por ejemplo, Openshift me ofrece un tipo de objeto que NO EXISTE en kubernetes (más de 200 realmente), llamado Route
+                            # El tipo de objeto Route de Openshift está definido en la librería route.openshift.io/v1
+                            # RESUMEN.... tengo que mirar la documentación!
+metadata:
+  name:           wordpress-desa # Nombre de ese objeto que quiero tener en kubernetes (Sirve de identificador)
+                                 # Nota importante respecto al nombre:
+                                 # Para aquellos objetos de kubernetes que no van asociados a un NAMESPACE (namespace, persistentvolume, serviceaccount, role, clusterole)
+                                 #   solo puedo tener en el cluster un objeto de ese tipo con ese nombre. El nombre debe ser UNICO en el CLUSTER.
+                                 #    EN EL CLUSTER SOLO PUEDO TENER UN pv llamado WORDPRESS
+                                 # Por contra, para aquellos objetos de kubernetes que van asociados a un NAMESPACE (pod, service, deployment, replicaset, statefulset, daemonset, job, cronjob)
+                                 #   puedo tener en el cluster un objeto de ese tipo con ese nombre en cada namespace. El nombre debe ser UNICO en el NAMESPACE.
+                                 #    PERO EN EL CLUSTER PUEDO TENER 1 pod llamado wordpress en el namespace desarrollo 
+                                 #                              Y OTRO pod llamado wordpress en el namespace produccion
+                                 # Precisamente por eso los namespace se llaman NAMEspace... Son espacios de nombres independientes.
+  #namespace:       namespace al que se asocia el objeto. Esto se puede poner... ES RARO HACERLO AQUI !
+                    # Solemos pasar esa info por linea de comandos
+# Algunos objetos pueden requerir de configuraciones adicionales (algunos permiten de cientos de configuraciones adicionales, como un pod)
+# Algunos otros no admiten ninguna... o no requieren ninguna... pocos (como un namespace, configmap, secret)
+# Si necesito poner configuraciones adicionales uso el bloque spec: Qué va dentro del spec??? AHHH!!!! Eso ya depende del tipo de objeto.
+#spec:
+---
