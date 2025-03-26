@@ -1,7 +1,20 @@
 
 services:
 
-    mariadb:
+    wordpress:
+        image:                          wordpress:6.7
+        container_name:                 mi-wordpress
+        volumes:
+                                      - /home/ubuntu/environment/datos/wordpress:/var/www/html
+        environment:
+              WORDPRESS_DB_PASSWORD:    password
+              WORDPRESS_DB_USER:        usuario
+              WORDPRESS_DB_NAME:        bd
+              WORDPRESS_DB_HOST:        mariadb
+        ports:
+                                      - 8081:80
+
+    mariadb: # fqdn (nombre de red del contenedor)
         image:                          mariadb:11.7
         container_name:                 mi-mariadb
         volumes:
