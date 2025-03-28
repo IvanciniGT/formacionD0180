@@ -171,25 +171,29 @@ Programas adicionales que puedo montar en un cluster de kubernetes también pued
 Esos objetos se definen en archivos YAML.
 
 Cuales son los que kubernetes trae por defecto:
-- Namespace
-- Pod
-- Deployment
-- StatefulSet
-- DaemonSet
-- Job
-- CronJob
-- Secret
-- ConfigMap
-- PersistentVolume
-- PersistentVolumeClaim
-- Service
-- Ingress
-- NetworkPolicy
-- ResourceQuota
-- LimitRange
-- HorizontalPodAutoscaler
-- ServiceAccount
-- PodDisruptionBudget
+√ Namespace                         Admin
+√ Pod                               Desarrollador
+√ Deployment                        Desarrollador
+√ StatefulSet                       Desarrollador
+√ DaemonSet                         RARO: Desarrollador
+√ Job                               Desarrollador
+√ CronJob                           Desarrollador
+√ Secret                            Admin
+√ ConfigMap                         Admin
+√ PersistentVolume                  Admin
+√ PersistentVolumeClaim             Desarrollador
+√ Service                           Desarrollador
+√ Ingress                           Desarrollador
+- NetworkPolicy                     Desarrollador
+- ResourceQuota                     Admin
+- LimitRange                        Admin
+[√] HorizontalPodAutoscaler         Desarrollador
+- ServiceAccount                    Admin
+- ClusterRole                       Admin   
+- Role                              Admin
+- ClusterRoleBinding                Admin
+- RoleBinding                       Admin
+- PodDisruptionBudget               Desarrollador
 - ...
 Nuestro principal objetivo en los próximos 2 días es aprender muchos de esos objetos. Qué son y para qué sirven.
 
@@ -275,6 +279,7 @@ Adicionalmente vamos a poder limitar también el consumo global de recursos que 
 - Mientras que en el namespace wordpress-prod, en total, entre todo lo que haya ahí dentro, no pueden hacer uso de más de 8 cores y 32Gbs de RAM.
 
 Cómo configuro un Namespace en Kubernetes... Exactamente igual que cualquier otro objeto.
+
 # Pod                                                       (apiVersion: v1)
 
 Conjunto de contenedores que...

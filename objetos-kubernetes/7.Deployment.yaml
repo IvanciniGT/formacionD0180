@@ -1,0 +1,76 @@
+
+---
+kind:                 Deployment
+apiVersion:           apps/v1
+
+metadata:
+  name:               mariadb
+
+
+spec:
+  replicas:           1
+          # kubectl scale deployment mariadb --replicas=3
+          # kubectl scale deployment mariadb --replicas=17 
+          # También tenemos un objeto en kubernetes para que kubernetes haga el escalado de forma automática:
+          # kind:                 HorizontalPodAutoscaler
+          # apiVersion:           autoscaling/v1
+
+  selector:
+    matchLabels:
+      app:            mariadb     # Esta linea debe coincidir con el label que hemos puesto en la plantilla (1)
+  template:
+      metadata:
+        name:         mariadb
+        labels:
+          app:        mariadb   # (1)
+          # Puedo poner aquí lo que quiera... por convenio todo el mundo usa la etiqueta app.
+      spec:
+        containers:
+          - name:             mariadb
+            image:            mariadb:11.7
+            imagePullPolicy:  IfNotPresent
+            resources:
+              requests:
+                cpu:        100m
+                memory:     128Mi
+              limits:  
+                cpu:        500m
+                memory:     128Mi
+            env:
+              - name:         MARIADB_ROOT_PASSWORD
+                valueFrom:  
+                  secretKeyRef:
+                    name:     datos-secretos-mariadb
+                    key:      password-root
+              - name:         MARIADB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name:     datos-secretos-mariadb
+                    key:      password
+              - name:         MARIADB_USER
+                valueFrom:
+                  configMapKeyRef:
+                    name:     datos-mariadb
+                    key:      usuario
+              - name:         MARIADB_DATABASE
+                valueFrom:
+                  configMapKeyRef:
+                    name:     datos-mariadb
+                    key:      nombre_bbdd
+            volumeMounts:
+              - name:         datos-bbdd
+                mountPath:    /var/lib/mysql
+              - name:         configuracion-bbdd
+                mountPath:    /etc/mysql
+              - name:         datos-temporales-compartidos
+                mountPath:    /tmp/datos
+            ports:
+              - name:           mariadb
+                containerPort:  3306
+                protocol:       TCP
+        volumes:
+          - name:           datos-temporales-compartidos
+            emptyDir: {}
+          - name:           datos-bbdd
+            persistentVolumeClaim:
+              claimName:    peticion-volumen-bbdd

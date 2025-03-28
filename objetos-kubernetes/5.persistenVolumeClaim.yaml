@@ -1,0 +1,19 @@
+# Un desarrollador hace una petición de volumen persistente
+
+kind:                 PersistentVolumeClaim
+apiVersion:           v1
+
+metadata:
+  name:               peticion-volumen-bbdd
+
+spec: # Lo especifico en mi lenguaje... con los datos que yo , OH! dueño de la app conozco... y me interesan.
+  resources:
+    requests:
+      storage:          5Gi
+  storageClassName:     rapidito-redundante
+  accessModes: # Va condicionado por el tipo de volumen
+                      - ReadWriteOnce   # Un volumen que sea solo para un proceso / en un solo host - ISCSI
+                      #- ReadWriteMany   # Un volumen que sea para varios procesos / en varios hosts - FS
+                      #- ReadOnlyMany    # Un volumen que sea solo de lectura
+
+# kubectl apply -f 5.persistenVolumeClaim.yaml -n desarrollo

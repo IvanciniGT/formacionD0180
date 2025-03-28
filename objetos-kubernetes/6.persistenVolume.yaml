@@ -1,0 +1,38 @@
+# Un desarrollador hace una petición de volumen persistente
+
+kind:                 PersistentVolume
+apiVersion:           v1
+
+metadata:
+  name:               volumen-bbdd
+
+spec: # Lo especifico en mi lenguaje... con los datos que yo , OH! dueño de la app conozco... y me interesan.
+  # DESCRIBIR EL VOLUMEN
+  capacity:
+    storage:            10Gi # este dato es informativo
+                             # Kubernetes no controla el tamaño. Solo lo usa para el MATCH
+                             # Incluso puede ocurrir que si trabajo con un volmen nfs...
+                             # Aunque haya puesto 5gbs... si el servidor nfs tiene 500Gbs... me los puedo comer todos.
+                             # Algunos provisionadores de volúmenes os permiten extender el volumen.
+                             # Pero no todos.
+  storageClassName:     rapidito-redundante
+  accessModes: # Va condicionado por el tipo de volumen
+                        - ReadWriteOnce   # Un volumen que sea solo para un proceso / en un solo host - ISCSI
+                        - ReadWriteMany   # Un volumen que sea para varios procesos / en varios hosts - FS
+                        - ReadOnlyMany    # Un volumen que sea solo de lectura
+  # Datos del backend... De dónde está realmente ese volumen creado.
+  # La creación del volumen habrá que hacerla previamente en el backend.
+  # Aquí solo registro los datos de un volumen PREVIAMENTE CREADO!
+  hostPath:
+    type: DirectoryOrCreate
+    path: /mnt/data
+     #iscsi:
+     #  targetPortal: 10.0.2.15:3260
+     #  portals: ['10.0.2.16:3260', '10.0.2.17:3260']
+     #  iqn: iqn.2001-04.com.example:storage.kube.sys1.xyz
+     #  lun: 0
+     #  fsType: ext4
+     #  readOnly: true
+      #nfs:
+      #  server: nfs-server.miempresa.com
+      #  path: "/mariadb/wp/desa"

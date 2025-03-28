@@ -1,0 +1,13 @@
+
+kind:         Service
+apiVersion:   v1
+metadata:
+  name:       basedatos-desarrollo # corresponde con el nombre de la entrada
+                                   #  en el DNS interno de kubernetes
+
+spec:
+  ports:
+    - port:       3307        # Puerto en la IP de balanceo interna
+      targetPort: 3306        # Puerto en el/los pod(s) entre los que hay que balancear
+  selector:
+    app:          mariadb     # Selecciona los pods que tienen el label app=mariadb
