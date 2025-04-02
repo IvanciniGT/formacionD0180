@@ -8,6 +8,31 @@ metadata:
 
 
 spec:
+  #nodeSelector: # requerida
+  #  gpu: true
+  
+  
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      #preferredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: gpu
+            operator: In # In, NotIn, Exists, DoesNotExist, Gt and Lt
+            values:
+            - true         
+  
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: security
+            operator: In
+            values:
+            - S1
+        topologyKey: topology.kubernetes.io/zone
+
   replicas:           1
           # kubectl scale deployment mariadb --replicas=3
           # kubectl scale deployment mariadb --replicas=17 
